@@ -1,29 +1,29 @@
-"""Two-Sentence Horror — a make.fun bounty entry.
+#!/usr/bin/env python3
+"""Two-Sentence Horror — prints the entry story to stdout.
 
-Writes the story to the path in ENTRY_OUTPUT (default /output/entry.txt).
-Pure standard library, deterministic, no network.
+The gate: exactly two sentences, 1 to 400 characters of UTF-8 text.
 """
 
-import os
-
-SENTENCE_ONE = (
-    "Every night since the funeral, I read my daughter a bedtime story "
-    "through the nursery monitor, because the grief counselor said a "
-    "ritual would help me let go."
+STORY = (
+    "I taught my daughter to knock twice when she needs me at night, "
+    "and for a year she has knocked twice, every single night. "
+    "Tonight the knock came twice, right on schedule, and when I opened "
+    "the door, my daughter was fast asleep in her bed."
 )
 
-SENTENCE_TWO = (
-    "Last night I stopped mid-sentence, and a small voice \u2014 hers, "
-    "word-perfect \u2014 finished it from inside her empty room."
-)
 
-STORY = SENTENCE_ONE + " " + SENTENCE_TWO
+def get_line() -> str:
+    # One story, assembled from its two sentences; the gate is checked
+    # on the joined text so a future edit cannot silently break it.
+    return STORY.strip()
 
 
-def main():
-    output = os.environ.get("ENTRY_OUTPUT", "/output/entry.txt")
-    with open(output, "w", encoding="utf-8") as f:
-        f.write(STORY)
+def main() -> None:
+    text = get_line()
+    assert 1 <= len(text) <= 400, "entry must be 1-400 characters"
+    assert text.count(".") == 2, "entry must be exactly two sentences"
+    assert text.strip() == text and text, "entry must not be only whitespace"
+    print(text)
 
 
 if __name__ == "__main__":
